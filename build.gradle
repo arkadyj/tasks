@@ -30,8 +30,9 @@ repositories {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
-	// https://mvnrepository.com/artifact/org.projectlombok/lombok
-	compile 'org.projectlombok:lombok:1.16.18'
+	compile('org.projectlombok:lombok:1.16.18')
+	compile('mysql:mysql-connector-java')
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	//privided group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
