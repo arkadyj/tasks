@@ -26,8 +26,9 @@ public class DbService {
     public void deleteTask(final Long id) {
         repository.removeById(id);
     }
-    public Task getTaskQuery(String taskId) {
-        return repository.findId(taskId);
+
+    public List<Task> findAllById(String taskId) {
+        return repository.findAllById(taskId);
     }
 
     public Task saveTask(final Task task) {

@@ -22,9 +22,9 @@ public interface TaskRepository extends CrudRepository<Task, Long> {
 
     void removeById(Long id);
 
+    @Query(value = "Select * from tasks where id like :PARAM", nativeQuery = true)
+    List<Task> findAllById (@Param("PARAM") String taskId);
+
     @Override
     Optional<Task> findById(Long id);
-
-    @Query(value = "Select * from tasks where id= :PARAM", nativeQuery = true)
-    Task findId(@Param("PARAM") String taskId);
 }
