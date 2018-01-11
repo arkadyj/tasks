@@ -19,7 +19,7 @@ public class DbService {
         return repository.findAll();
     }
 
-    public List<Task> getAllByTitle(String title) {
+    public List<Task> getAllByTitle(final String title) {
         return repository.findAllByTitleContains(title);
     }
 
@@ -31,7 +31,7 @@ public class DbService {
         repository.removeById(id);
     }
 
-    public List<Task> findAllById(String taskId) {
+    public List<Task> findAllById(final String taskId) {
         return repository.findAllById(taskId);
     }
 
