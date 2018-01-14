@@ -17,8 +17,16 @@ public interface TaskRepository extends CrudRepository<Task, Long> {
     @Override
     List<Task> findAll();
 
-    Task findById(String taskId);
+    List<Task> findAllByTitleContains(String title);
 
-    @Query(value = "Select * from tasks where id= :PARAM", nativeQuery = true)
-    Task findId(@Param("PARAM") String taskId);
+    @Override
+    Task save(Task task);
+
+    void removeById(Long id);
+
+    @Query(value = "Select * from tasks where id like :PARAM", nativeQuery = true)
+    List<Task> findAllById(@Param("PARAM") String taskId);
+
+    @Override
+    Optional<Task> findById(Long id);
 }
