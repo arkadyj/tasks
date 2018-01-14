@@ -24,7 +24,7 @@ public interface TaskRepository extends CrudRepository<Task, Long> {
 
     void removeById(Long id);
 
-    @Query(value = "Select * from tasks where id like :PARAM", nativeQuery = true)
+    @Query(value = "Select * FROM tasks where id like :PARAM", nativeQuery = true)
     List<Task> findAllById(@Param("PARAM") String taskId);
 
     @Override
