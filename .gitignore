@@ -1,6 +1,10 @@
 .gradle
 /build/
+<<<<<<< HEAD
+/out
+=======
 out/
+>>>>>>> 14c51ff42616cb2e4191270cd73bd5ba8cf090c3
 /out/
 !gradle/wrapper/gradle-wrapper.jar
 
