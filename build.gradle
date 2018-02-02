@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '2.0.0.M7'
+		springBootVersion = '2.0.0.M4'
 	}
 	repositories {
 		mavenCentral()
@@ -16,6 +16,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'war'
 
 group = 'com.crud'
 version = '0.0.1-SNAPSHOT'
@@ -36,4 +37,6 @@ dependencies {
 	//privided group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+
+	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 }
