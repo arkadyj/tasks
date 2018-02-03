@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/trello")
@@ -18,14 +19,14 @@ public class TrelloController {
     private TrelloClient trelloClient;
 
     @RequestMapping(method = RequestMethod.GET, value = "getTrelloBoards")
-    public void getTrelloBoards() {
+    public List<TrelloBoardDto> getTrelloBoards() {
 
         List<TrelloBoardDto> lista = new ArrayList<>();
         List<TrelloBoardDto> trelloBoards = trelloClient.getTrelloBoards().orElse(lista);
 
-        trelloBoards.stream()
+        return trelloBoards.stream()
                 .filter(trelloBoardDto -> trelloBoardDto.getId() != null)
                 .filter(trelloBoardDto -> trelloBoardDto.getName().toUpperCase().contains("KODILLA"))
-                .forEach(trelloBoardDto -> System.out.println(trelloBoardDto.getId() + " " + trelloBoardDto.getName()));
+                .collect(Collectors.toList());
     }
 }
