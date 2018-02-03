@@ -21,7 +21,6 @@ public class TrelloController {
     public void getTrelloBoards() {
 
         List<TrelloBoardDto> lista = new ArrayList<>();
-
         List<TrelloBoardDto> trelloBoards = trelloClient.getTrelloBoards().orElse(lista);
 
         trelloBoards.stream()
