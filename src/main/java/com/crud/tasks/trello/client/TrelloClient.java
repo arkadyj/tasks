@@ -45,13 +45,5 @@ public class TrelloClient {
                 url, TrelloBoardDto[].class);
 
         return Optional.of(Arrays.asList(boardsResponse));
-
-        /*if (boardsResponse != null) {
-            return Arrays.asList(boardsResponse);
-        }
-        return new ArrayList<>(); */
-
     }
-
-
 }
