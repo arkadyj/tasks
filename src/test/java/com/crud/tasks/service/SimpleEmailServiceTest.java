@@ -8,6 +8,9 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+
+import java.util.Optional;
+
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -28,9 +31,7 @@ public class SimpleEmailServiceTest {
         Mail mail = new Mail("test@test.com", "","Test subject", "Test message");
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(mail.getMailTo());
-        if (mail.getToCc().contains("@") && mail.getToCc().contains(".")) {
-            mailMessage.setCc(mail.getToCc());
-        }
+        Optional.ofNullable(mail.getToCc()).ifPresent(email -> mailMessage.setCc(email));
         mailMessage.setSubject(mail.getSubject());
         mailMessage.setText(mail.getMessage());
 

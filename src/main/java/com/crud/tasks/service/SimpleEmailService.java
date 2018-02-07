@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
+
 @Service
 public class SimpleEmailService {
 
@@ -32,12 +34,7 @@ public class SimpleEmailService {
     private SimpleMailMessage createMailMessage(final Mail mail) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(mail.getMailTo());
-        if (mail.getToCc().contains("@") && mail.getToCc().contains(".")) {
-            mailMessage.setCc(mail.getToCc());
-        }
-        else {
-            LOGGER.info("Additional recipient has not been set");
-        }
+        Optional.ofNullable(mail.getToCc()).ifPresent(email -> mailMessage.setCc(email));
         mailMessage.setSubject(mail.getSubject());
         mailMessage.setText(mail.getMessage());
         return mailMessage;
