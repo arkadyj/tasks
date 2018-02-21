@@ -95,8 +95,8 @@ public class TaskControllerTest {
         Long taskId = 1L;
         doNothing().when(dbService).deleteTask(1L);
 
-        mockMvc.perform(delete("/v1/task/deleteTask?taskId=1")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(delete("/v1/task/deleteTask")
+                .param("taskId","1"))
                 .andExpect(status().isOk());
         verify(dbService, times(1)).deleteTask(1L);
         verifyNoMoreInteractions(dbService);
