@@ -1,6 +1,7 @@
 package com.crud.tasks.mapper;
 
 import com.crud.tasks.domain.*;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,8 @@ public class MapperTestSuite {
 
     @Autowired
     private TrelloMapper trelloMapper;
+    @Autowired
+    private TaskMapper taskMapper;
 
     @Test
     public void testTrelloBoardMapper() {
@@ -65,4 +69,30 @@ public class MapperTestSuite {
         Assert.assertEquals("Build new CRUD application", descCard);
         Assert.assertEquals("56345584", listIdCard);
     }
+
+    @Test
+    public void testTaskMapper() {
+        //Given
+        Task task = new Task(1L, "New test task title", "New test task content" );
+        List<Task> taskList = new ArrayList<>();
+        taskList.add(task);
+
+        //When
+        TaskDto taskDto = taskMapper.mapToTaskDto(task);
+        List<TaskDto> taskDtoList = taskMapper.mapToTaskDtoList(taskList);
+        Task newTask = taskMapper.mapToTask(taskDto);
+
+        //Then
+        Assert.assertEquals(new Long(1), taskDto.getId());
+        Assert.assertEquals("New test task title", taskDto.getTitle());
+        Assert.assertEquals("New test task content", taskDto.getContent());
+
+        Assert.assertEquals(taskDto.getId(),newTask.getId());
+        Assert.assertEquals(taskDto.getTitle(),newTask.getTitle());
+        Assert.assertEquals(taskDto.getContent(),newTask.getContent());
+
+        Assert.assertEquals(1,taskDtoList.size());
+        Assert.assertEquals("New test task title",taskDtoList.get(0).getTitle());
+    }
+
 }

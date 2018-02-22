@@ -1,9 +1,6 @@
 package com.crud.tasks.Facade;
 
-import com.crud.tasks.domain.TrelloBoard;
-import com.crud.tasks.domain.TrelloBoardDto;
-import com.crud.tasks.domain.TrelloList;
-import com.crud.tasks.domain.TrelloListDto;
+import com.crud.tasks.domain.*;
 import com.crud.tasks.mapper.TrelloMapper;
 import com.crud.tasks.service.TrelloService;
 import com.crud.tasks.trello.facade.TrelloFacade;
@@ -64,6 +61,28 @@ public class TrelloFacadeTest {
         //Then
         Assert.assertNotNull(trelloBoardDtos);
         Assert.assertEquals(0,trelloBoardDtos.size());
+    }
+
+    @Test
+    public void shouldCreateCard() {
+        CreatedTrelloCardDto createdTrelloCardDto = new CreatedTrelloCardDto("1", "Test card", "http://test.com");
+        TrelloCard trelloCard = new TrelloCard("Test card", "Test description","top","333");
+        TrelloCardDto trelloCardDto = new TrelloCardDto("Test card", "Test description","top","333");
+
+
+        when(trelloMapper.mapToCard(trelloCardDto)).thenReturn(trelloCard);
+        when(trelloService.createTrelloCard(trelloMapper.mapToCardDto(trelloCard))).thenReturn(createdTrelloCardDto);
+
+        //When
+        CreatedTrelloCardDto createdTrelloCardDto1 = trelloFacade.createCard(trelloCardDto);
+
+        //Then
+        Assert.assertEquals("1",createdTrelloCardDto1.getId());
+        Assert.assertEquals("Test card",createdTrelloCardDto1.getName());
+        Assert.assertEquals("http://test.com",createdTrelloCardDto1.getShortUrl());
+
+
+
     }
 
     @Test
