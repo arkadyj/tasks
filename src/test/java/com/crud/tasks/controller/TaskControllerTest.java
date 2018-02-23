@@ -5,7 +5,9 @@ import com.crud.tasks.domain.TaskDto;
 import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DbService;
 import com.google.gson.Gson;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -16,6 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -37,6 +41,9 @@ public class TaskControllerTest {
 
     @MockBean
     private TaskMapper taskMapper;
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     @Test
     public void shouldGetEmptyTaskList() throws Exception {
@@ -120,4 +127,69 @@ public class TaskControllerTest {
                 .andExpect(jsonPath("$.title", is("Test")))
                 .andExpect(jsonPath("$.content", is("Test content")));
     }
+
+    @Test
+    public void shouldGetTaskQuery() throws Exception {
+        //Given
+        TaskDto taskDto = new TaskDto(1L, "Test task query", "Content task query");
+        List<TaskDto> taskListDto = new ArrayList<>();
+        taskListDto.add(taskDto);
+        String taskId="";
+
+        when(taskMapper.mapToTaskDtoList(dbService.findAllById(taskId))).thenReturn(taskListDto);
+
+        //When & Then
+        mockMvc.perform(get("/v1/task/getTasksQuery").contentType(MediaType.APPLICATION_JSON)
+                .param("taskId","1"))
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].title", is("Test task query")))
+                .andExpect(jsonPath("$[0].content", is("Content task query")));
+    }
+
+    @Test
+    public void shouldGetTaskByTitle() throws Exception {
+        //Given
+        TaskDto taskDto = new TaskDto(1L, "Test task title", "Content task title");
+        List<TaskDto> taskListDto = new ArrayList<>();
+        taskListDto.add(taskDto);
+        String title = "Test task title";
+
+        when(taskMapper.mapToTaskDtoList(dbService.getAllByTitle(title))).thenReturn(taskListDto);
+
+        //When & Then
+        mockMvc.perform(get("/v1/task/getTasksByTitle").contentType(MediaType.APPLICATION_JSON)
+                .param("title","Test task title"))
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].title", is("Test task title")))
+                .andExpect(jsonPath("$[0].content", is("Content task title")));
+    }
+
+    /*@Test
+    public void shouldGetTask() throws Exception {
+        //Given
+        Optional<TaskDto> taskDto = Optional.of(new TaskDto(33L, "Test task", "Content task"));
+        TaskDto taskDto1 = new TaskDto(33L, "Test task", "Content task");
+        Task task = new Task(33L, "Test task", "Content task");
+        Long taskId=1L;
+
+        when(taskMapper.mapToTaskDto(dbService.getTask(taskId).orElseThrow(Exception::new))).thenReturn(taskDto1);
+
+        //When & Then
+        try {
+            mockMvc.perform(get("/v1/task/getTask").contentType(MediaType.APPLICATION_JSON)
+                    .param("taskId","33"))
+                    .andExpect(status().is(200))
+                    .andExpect(jsonPath("$", hasSize(1)))
+                    .andExpect(jsonPath("$.id", is(1)))
+                    .andExpect(jsonPath("$.title", is("Test task")))
+                    .andExpect(jsonPath("$.content", is("Content task")));
+        } catch ( Exception e) {
+
+        }
+
+    } */
 }
