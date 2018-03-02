@@ -28,7 +28,7 @@ public class EmailSchedulerTestSuite {
     @Test
     public void shouldMailScheduler() {
         //Given
-        Mail mail = new Mail("test@gmail.com","","Test mail", "Message body");
+        //Mail mail = new Mail("test@gmail.com","","Test mail", "Message body");
 
         when(taskRepository.count()).thenReturn(1L);
         when(adminConfig.getAdminMail()).thenReturn("test@gmail.com");
