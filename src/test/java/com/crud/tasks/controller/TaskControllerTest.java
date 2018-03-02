@@ -42,6 +42,8 @@ public class TaskControllerTest {
     @MockBean
     private TaskMapper taskMapper;
 
+    private TaskNotFoundException taskNotFoundException;
+
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
@@ -103,7 +105,7 @@ public class TaskControllerTest {
         doNothing().when(dbService).deleteTask(1L);
 
         mockMvc.perform(delete("/v1/task/deleteTask")
-                .param("taskId","1"))
+                .param("taskId", "1"))
                 .andExpect(status().isOk());
         verify(dbService, times(1)).deleteTask(1L);
         verifyNoMoreInteractions(dbService);
@@ -134,13 +136,13 @@ public class TaskControllerTest {
         TaskDto taskDto = new TaskDto(1L, "Test task query", "Content task query");
         List<TaskDto> taskListDto = new ArrayList<>();
         taskListDto.add(taskDto);
-        String taskId="";
+        String taskId = "";
 
         when(taskMapper.mapToTaskDtoList(dbService.findAllById(taskId))).thenReturn(taskListDto);
 
         //When & Then
         mockMvc.perform(get("/v1/task/getTasksQuery").contentType(MediaType.APPLICATION_JSON)
-                .param("taskId","1"))
+                .param("taskId", "1"))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", is(1)))
@@ -160,7 +162,7 @@ public class TaskControllerTest {
 
         //When & Then
         mockMvc.perform(get("/v1/task/getTasksByTitle").contentType(MediaType.APPLICATION_JSON)
-                .param("title","Test task title"))
+                .param("title", "Test task title"))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", is(1)))
@@ -168,28 +170,23 @@ public class TaskControllerTest {
                 .andExpect(jsonPath("$[0].content", is("Content task title")));
     }
 
-    /*@Test
+    @Test
     public void shouldGetTask() throws Exception {
         //Given
-        Optional<TaskDto> taskDto = Optional.of(new TaskDto(33L, "Test task", "Content task"));
-        TaskDto taskDto1 = new TaskDto(33L, "Test task", "Content task");
-        Task task = new Task(33L, "Test task", "Content task");
-        Long taskId=1L;
+        Optional<Task> task = Optional.of(new Task(333L, "Test task", "Content task"));
+        Task task1 = new Task(333L, "Test task", "Content task");
+        TaskDto taskDto = new TaskDto(333L, "Test task", "Content task");
 
-        when(taskMapper.mapToTaskDto(dbService.getTask(taskId).orElseThrow(Exception::new))).thenReturn(taskDto1);
+        when(dbService.getTask(anyLong())).thenReturn(task);
+        when(taskMapper.mapToTaskDto(any(Task.class))).thenReturn(taskDto);
 
-        //When & Then
-        try {
-            mockMvc.perform(get("/v1/task/getTask").contentType(MediaType.APPLICATION_JSON)
-                    .param("taskId","33"))
-                    .andExpect(status().is(200))
-                    .andExpect(jsonPath("$", hasSize(1)))
-                    .andExpect(jsonPath("$.id", is(1)))
-                    .andExpect(jsonPath("$.title", is("Test task")))
-                    .andExpect(jsonPath("$.content", is("Content task")));
-        } catch ( Exception e) {
-
-        }
-
-    } */
+        // When & Then
+        mockMvc.perform(get("/v1/task/getTask").contentType(MediaType.APPLICATION_JSON)
+                .param("taskId", "333")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(333)))
+                .andExpect(jsonPath("$.title", is("Test task")))
+                .andExpect(jsonPath("$.content", is("Content task")));
+    }
 }
