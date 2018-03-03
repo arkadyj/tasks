@@ -66,7 +66,7 @@ public class TrelloServiceTestSuite {
         lists.add(new TrelloListDto("1", "Trello list", false));
         TrelloBoardDto[] trelloBoards = new TrelloBoardDto[1];
         trelloBoards[0] = new TrelloBoardDto("11", "Test board", lists);
-        URI uri = new URI("http://test.com/members/member/boards?key=test&token=test&fields=name,id&lists=all");
+        URI uri = new URI("http://test.com/members/arkadyj/boards?key=test&token=test&fields=name,id&lists=all");
         when(restTemplate.getForObject(uri, TrelloBoardDto[].class)).thenReturn(trelloBoards);
 
         List<TrelloBoardDto> trelloBoardDtoList = new ArrayList<>();
