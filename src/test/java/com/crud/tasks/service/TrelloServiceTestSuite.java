@@ -52,11 +52,10 @@ public class TrelloServiceTestSuite {
         CreatedTrelloCardDto result = trelloService.createTrelloCard(trelloCardDto);
 
         // Then
-        assertNotNull(result);
+        assertEquals("kodilla_test@gmail.com", adminConfig.getAdminMail());
         assertEquals("www.test.com/1123", result.getShortUrl());
         assertEquals("Test", result.getName());
         assertEquals("1", result.getId());
-        assertEquals("kodilla_test@gmail.com", adminConfig.getAdminMail());
     }
 
     @Test
@@ -77,7 +76,6 @@ public class TrelloServiceTestSuite {
         List<TrelloBoardDto> result = trelloService.fetchTrelloBoards();
 
         // Then
-        assertFalse(result.isEmpty());
         assertEquals(1, result.size());
         assertFalse(result.get(0).getLists().get(0).isClosed());
         assertEquals("Trello list", result.get(0).getLists().get(0).getName());
