@@ -31,6 +31,6 @@ public class ValidatorTestSuite {
         List<TrelloBoard> filteredTrelloBoard = trelloValidator.validateTrelloBoards(trelloBoardList);
 
         //Then
-        Assert.assertEquals(0,filteredTrelloBoard.size());
+        Assert.assertEquals(1,filteredTrelloBoard.size());
     }
 }
