@@ -37,7 +37,7 @@ public class TrelloService {
                 adminConfig.getAdminMail(),
                 "szelaga@mcs-przychodnia",
                 SUBJECT,
-                "New Card" + card.getName() + "has been created")));
+                "New Card" + card.getName() + "has been created"),"card"));
 
         return newCard;
     }
