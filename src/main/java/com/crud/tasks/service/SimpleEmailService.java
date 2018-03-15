@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.mail.MessagingException;
 import java.util.Optional;
 
 @Service
@@ -28,9 +29,9 @@ public class SimpleEmailService {
 
         LOGGER.info("Preparing email");
         try {
-            //SimpleMailMessage mailMessage = createMailMessage(mail);
-            //javaMailSender.send(mailMessage);
-            javaMailSender.send(createMimeMessage(mail, mailType));
+            SimpleMailMessage mailMessage = createMailMessage(mail);
+            javaMailSender.send(mailMessage);
+            //javaMailSender.send(createMimeMessage(mail, mailType));
             LOGGER.info("Mail has been sent.");
         } catch (MailException e) {
             LOGGER.error("Failed to process email sending: ", e.getMessage(),e);
@@ -46,7 +47,7 @@ public class SimpleEmailService {
         return mailMessage;
     }
 
-    private MimeMessagePreparator createMimeMessage(final Mail mail, String mailType) {
+    private MimeMessagePreparator createMimeMessage(final Mail mail, String mailType){
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
