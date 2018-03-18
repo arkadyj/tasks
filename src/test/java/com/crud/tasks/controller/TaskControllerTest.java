@@ -105,7 +105,7 @@ public class TaskControllerTest {
         Long taskId = 1L;
         doNothing().when(dbService).deleteTask(1L);
 
-        mockMvc.perform(delete("/v1/tasks/{1]")
+        mockMvc.perform(delete("/v1/tasks/1")
                 .param("taskId", "1"))
                 .andExpect(status().isOk());
         verify(dbService, times(1)).deleteTask(1L);
